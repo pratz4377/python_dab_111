@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    table,
+    th,
+    td {
+        border: 1px solid black;
+        padding: 10px;
+    }
+</style>
+
+<script>
+    var items = 10
+    let el;
+    let tableDiv;
+
+    var data = {{ jsonData | safe }}
+
+    console.log("Data: ",data)
+
+    window.onload = function () {
+        el = document.getElementById("items")
+        el.textContent = items
+        tableDiv = document.getElementById("data-table")
+        createTable()
+    }
+
+    function createTable(){
+        innerHTML = ""
+        innerHTML += `<table style="border: 2px solid black;">
+            <tr>
+                <th>Wage ($)</th>
+                <th>Age</th>
+                <th>Club</th>
+                <th>League</th>
+                <th>Nation</th>
+                <th>Position</th>
+                <th>Apps</th>
+                <th>Caps</th>
+            </tr>`
+        for(let i=0;i < items;i++){
+            innerHTML += "<tr>"
+            entries = Object.entries(data[i])
+            for(let j in Object.entries(data[i])){
+                innerHTML += "<td>"
+                innerHTML += entries[j][1]
+                innerHTML += "</td>" 
+            }
+            innerHTML += "</tr>"
+        }
+        innerHTML += "</tr>"
+        tableDiv.innerHTML = innerHTML
+    }
+
+    function addMore() {
+        items += 10
+        items = Math.min(items,data.length)
+        el.textContent = items
+        createTable()
+    }
+
+</script>
+
+<body>
+    <h1>Data</h1>
+    Items: <span id="items"></span>
+    <button onclick="addMore()" >Increase</button>
+    <br />
+    <a href="/">Home</a>
+    <div style="padding: 10px; margin: 10px;" id="data-table" >
+    </div>
+</body>
+
+</html>
+
+
+<!-- <table style="border: 2px solid black;">
+            <tr>
+                <th>Wage ($)</th>
+                <th>Age</th>
+                <th>Club</th>
+                <th>League</th>
+                <th>Nation</th>
+                <th>Position</th>
+                <th>Apps</th>
+                <th>Caps</th>
+            </tr>
+            {% for i in range(row|length) %}
+            <tr>
+                <td> {{ row[i][0] }} </td>
+                <td>{{row[i][1]}}</td>
+                <td>{{row[i][2]}}</td>
+                <td>{{row[i][3]}}</td>
+                <td>{{row[i][4]}}</td>
+                <td>{{row[i][5]}}</td>
+                <td>{{row[i][6]}}</td>
+                <td>{{row[i][7]}}</td>
+            </tr>
+            {% endfor %}
+    </table> -->
